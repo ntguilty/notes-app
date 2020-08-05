@@ -7,6 +7,11 @@ import (
 	"os"
 )
 
+type application struct {
+	errorLog *log.Logger
+	infoLog  *log.Logger
+}
+
 func main() {
 	// Add flag -addr to give http network address
 	addr := flag.String("addr", ":4000", "HTTP network address")
@@ -20,11 +25,18 @@ func main() {
 	mux.HandleFunc("/note", showNote)
 	mux.HandleFunc("/note/create", createNote)
 
-	//Create a server to serve files from "./ui/static/", register a file server as a handle for "/static/" and strip to match paths.
+	//Create a fileserver to serve files from "./ui/static/", register a file server as a handle for "/static/" and strip to match paths.
 	fileServerStatic := http.FileServer(http.Dir("./ui/static/"))
 	mux.Handle("/static/", http.StripPrefix("/static", fileServerStatic))
 
+	// Create a custom server struct to set my own errorLog as a stuff for logging errors
+	srv := &http.Server{
+		Addr:     *addr,
+		ErrorLog: errorLog,
+		Handler:  mux,
+	}
+
 	infoLog.Printf("Starting server on %s", *addr)
-	err := http.ListenAndServe(*addr, mux)
+	err := srv.ListenAndServe()
 	errorLog.Fatal(err)
 }
