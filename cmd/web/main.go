@@ -20,10 +20,16 @@ func main() {
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Llongfile)
 
+	app := &application{
+		errorLog: errorLog,
+		infoLog:
+		infoLog,
+	}
+
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", home)
-	mux.HandleFunc("/note", showNote)
-	mux.HandleFunc("/note/create", createNote)
+	mux.HandleFunc("/", app.home)
+	mux.HandleFunc("/note", app.showNote)
+	mux.HandleFunc("/note/create", app.createNote)
 
 	//Create a fileserver to serve files from "./ui/static/", register a file server as a handle for "/static/" and strip to match paths.
 	fileServerStatic := http.FileServer(http.Dir("./ui/static/"))
