@@ -17,7 +17,7 @@ type application struct {
 func main() {
 	// Add flag -addr to give http network address
 	addr := flag.String("addr", ":4000", "HTTP network address")
-	dsn := flag.String("dsn", "web:pass@/notesapp?parseTime=true", "MySQL data source name")
+	dsn := flag.String("dsn", "web:d8NaffvJEqQVJS5XnxmY@/notesapp?parseTime=true", "MySQL data source name")
 	flag.Parse()
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
