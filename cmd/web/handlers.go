@@ -40,12 +40,12 @@ func (app *application) showNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	s,err := app.notes.Get(id)
+	s, err := app.notes.Get(id)
 	if err != nil {
 		if errors.Is(err, models.ErrNoRecord) {
 			app.notFound(w)
 		} else {
-			app.serverError(w,err)
+			app.serverError(w, err)
 		}
 		return
 	}
@@ -58,7 +58,6 @@ func (app *application) createNote(w http.ResponseWriter, r *http.Request) {
 		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
-
 
 	title := "O snail"
 	content := "O snail\nClimb Mount Fuji,\nBut slowly, slowly!\n\n– Kobayashi Issa"

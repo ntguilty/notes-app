@@ -13,7 +13,7 @@ import (
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
-	notes *mysql.NoteModel
+	notes    *mysql.NoteModel
 }
 
 func main() {
@@ -34,8 +34,8 @@ func main() {
 
 	app := &application{
 		errorLog: errorLog,
-		infoLog: infoLog,
-		notes: &mysql.NoteModel{DB: db},
+		infoLog:  infoLog,
+		notes:    &mysql.NoteModel{DB: db},
 	}
 
 	// Create a custom server struct to set my own errorLog as a stuff for logging errors
@@ -48,7 +48,6 @@ func main() {
 	infoLog.Printf("Starting server on %s", *addr)
 	err = srv.ListenAndServe()
 	errorLog.Fatal(err)
-
 
 }
 
