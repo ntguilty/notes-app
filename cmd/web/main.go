@@ -3,15 +3,17 @@ package main
 import (
 	"database/sql"
 	"flag"
+	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"net/http"
+	"ntguilty.me/notes-app/pkg/models/mysql"
 	"os"
-	_ "github.com/go-sql-driver/mysql"
 )
 
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
+	notes *mysql.NoteModel
 }
 
 func main() {
@@ -32,8 +34,8 @@ func main() {
 
 	app := &application{
 		errorLog: errorLog,
-		infoLog:
-		infoLog,
+		infoLog: infoLog,
+		notes: &mysql.NoteModel{DB: db},
 	}
 
 	// Create a custom server struct to set my own errorLog as a stuff for logging errors
