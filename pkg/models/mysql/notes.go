@@ -52,7 +52,32 @@ func (m *NoteModel) Get(id int) (*models.Note, error) {
 	return s, nil
 }
 
-// This will return the 10 most recently created notes.
 func (m *NoteModel) Latest() ([]*models.Note, error) {
-	return nil, nil
+	stmt := `SELECT id, title, content, created, expires FROM notes
+	WHERE expires > UTC_TIMESTAMP() ORDER BY created DESC LIMIT 10`
+
+	rows, err := m.DB.Query(stmt)
+	if err != nil {
+		return nil, err
+	}
+
+	// This evaluate right now but will be executed after the Latest() returns
+	defer rows.Close()
+
+	notes := []*models.Note{}
+
+	for rows.Next() {
+		s := &models.Note{}
+		err = rows.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expires)
+		if err != nil {
+			return nil, err
+		}
+		notes = append(notes, s)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return notes, nil
 }
