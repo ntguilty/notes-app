@@ -10,6 +10,7 @@ import (
 //any dynamic data that we want to pass to our HTML templates (because our htmpl template can
 
 type templateData struct {
+	CurrentYear int
 	Note  *models.Note
 	Notes []*models.Note
 }
