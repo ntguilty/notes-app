@@ -17,7 +17,6 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	s, err := app.notes.Latest()
 	if err != nil {
 		app.serverError(w, err)
-		return
 	}
 
 	app.render(w,r, "home.page.tmpl", &templateData{
