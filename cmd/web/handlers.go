@@ -35,6 +35,7 @@ func (app *application) showNote(w http.ResponseWriter, r *http.Request) {
 		} else {
 			app.serverError(w, err)
 		}
+
 		return
 	}
 
@@ -50,9 +51,15 @@ func (app *application) createNoteForm(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) createNote(w http.ResponseWriter, r *http.Request) {
 
-	title := "O snail"
-	content := "O snail\nClimb Mount Fuji,\nBut slowly, slowly!\n\n– Kobayashi Issa"
-	expires := "7"
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	title := r.PostForm.Get("title")
+	content := r.PostForm.Get("content")
+	expires := r.PostForm.Get("expires")
 
 	id, err := app.notes.Insert(title, content, expires)
 	if err != nil {
@@ -60,5 +67,5 @@ func (app *application) createNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, fmt.Sprintf("/%d", id), http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/note/%d", id), http.StatusSeeOther)
 }
