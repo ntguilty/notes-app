@@ -2,6 +2,7 @@ package main
 
 import (
 	"html/template"
+	"net/url"
 	"ntguilty.me/notes-app/pkg/models"
 	"path/filepath"
 	"time"
@@ -12,6 +13,10 @@ import (
 
 type templateData struct {
 	CurrentYear int
+	// Add those two for returning validation errors and
+	// previously submitted data
+	FormErrors map[string]string
+	FormData url.Values
 	Note  *models.Note
 	Notes []*models.Note
 }
