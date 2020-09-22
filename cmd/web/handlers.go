@@ -16,9 +16,9 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 	}
 
-	app.render(w,r, "home.page.tmpl", &templateData{
-	 	Notes: s,
-	 })
+	app.render(w, r, "home.page.tmpl", &templateData{
+		Notes: s,
+	})
 
 }
 
@@ -40,8 +40,8 @@ func (app *application) showNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.render(w,r,"show.page.tmpl", &templateData{
-		Note: s,
+	app.render(w, r, "show.page.tmpl", &templateData{
+		Note:  s,
 	})
 }
 
@@ -50,7 +50,6 @@ func (app *application) createNoteForm(w http.ResponseWriter, r *http.Request) {
 		Form: forms.New(nil),
 	})
 }
-
 
 func (app *application) createNote(w http.ResponseWriter, r *http.Request) {
 
@@ -62,7 +61,8 @@ func (app *application) createNote(w http.ResponseWriter, r *http.Request) {
 
 	form := forms.New(r.PostForm)
 	form.Required("title", "content", "expires")
-	form.MaxLength("title", 100)
+	form.MaxLength("title", 50)
+	form.MaxLength("content", 500)
 	form.PermittedValues("expires", "365", "7", "1")
 
 	if !form.Valid() {
@@ -75,6 +75,8 @@ func (app *application) createNote(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
+
+	app.session.Put(r, "flash", "Note successfully created!")
 
 	http.Redirect(w, r, fmt.Sprintf("/note/%d", id), http.StatusSeeOther)
 }
