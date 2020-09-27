@@ -1,4 +1,5 @@
 package forms
+
 import (
 	"fmt"
 	"net/url"
@@ -14,6 +15,7 @@ type Form struct {
 	url.Values
 	Errors errors
 }
+
 func New(data url.Values) *Form {
 	return &Form{
 		data,

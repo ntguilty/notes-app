@@ -1,9 +1,9 @@
 package main
 
 import (
+	"github.com/bmizerany/pat"
 	"github.com/justinas/alice"
 	"net/http"
-	"github.com/bmizerany/pat"
 )
 
 func (app *application) routes() http.Handler {

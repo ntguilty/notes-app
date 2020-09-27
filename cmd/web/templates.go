@@ -16,15 +16,12 @@ type templateData struct {
 	Flash       string
 }
 
-
-
 func humanDate(t time.Time) string {
 	return t.Format("02 Jan 2006 at 15:04")
 }
 
 var functions = template.FuncMap{
-	"humanDate" : humanDate,
-
+	"humanDate": humanDate,
 }
 
 func newTemplateCache(dir string) (map[string]*template.Template, error) {
