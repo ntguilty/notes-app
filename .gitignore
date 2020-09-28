@@ -125,3 +125,4 @@ fabric.properties
 
 tls/
 .idea/inspectionProfiles/
+.idea/*
