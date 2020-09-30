@@ -9,6 +9,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"ntguilty.me/notes-app/pkg/models"
 	"ntguilty.me/notes-app/pkg/models/mysql"
 	"os"
 	"time"
@@ -18,13 +19,24 @@ type contextKey string
 
 const contextKeyIsAuthenticated = contextKey("isAuthenticated")
 
+
+// Changed application struct with notes and users with *mysql.* to interface
+// because we wanted to enable mocking database.
 type application struct {
 	errorLog      *log.Logger
 	infoLog       *log.Logger
 	session       *sessions.Session
-	notes         *mysql.NoteModel
+	notes         interface {
+		Insert(string, string, string) (int, error)
+		Get(int) (*models.Note, error)
+		Latest() ([]*models.Note, error)
+	}
 	templateCache map[string]*template.Template
-	users         *mysql.UserModel
+	users         interface {
+		Insert(string, string, string) error
+		Authenticate(string, string) (int, error)
+		Get(int) (*models.User, error)
+	}
 }
 
 func main() {
